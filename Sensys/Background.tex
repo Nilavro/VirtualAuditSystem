@@ -1,0 +1,36 @@
+
+\section{Background}
+
+\subsection{Datasets}
+\indent We conducted using three different datasets for our experimentation. Our experiments are primarily based on datasets from homes in Austin and a smaller dataset from a house in Baltimore. Both places have hot humid climates where in Austin has very long, hot summers; warm transitional seasons; and short, mild winters where snowfall is exceptionally rare. Baltimore on the other hand lies in humid subtropical climate zone, with four distinct seasons. Winters are chilly but variable and is affected by Polar air masses and summers have hot days. We also use a smaller dataset provided in the earlier work, from a house in Denmark.
+
+\indent \textbf{Pecan Street Dataset:~\cite{Pecan}} The Pecan street dataset consists of a large number of home's itemized energy, gas, water consumption data along with a variety of other data like indoor temperature, off-grid power data, metadata of the homes in three different cities. We chose the dataset for gas and power consumption from single-family homes in Austin which have indoor temperature data and metadata and a sizable dataset for a common duration. Consumption and indoor data has a minute-wise granularity. The weather data is available at an hourly rate which is interpolated to a half hourly and 15 minute rate, under the assumption outdoor temperature changes slowly over time. Our preliminary study is limited to 14 homes which meet the requirement. The size of the individual homes' datasets vary from several months to two years depending on the available data. 
+
+\indent \textbf{CTSM Dataset:~\cite{CTSM}} The Continuous Time Stochastic Modeling toolbox provides a dataset for heat dynamics modeling for a house in Denmark in winter months. The data consist of heater consumption, indoor and outdoor temperature, and solar radiation data collected at a 15 min interval.
+
+\indent \textbf{Collected Data:} We have setup testbed in a single-family home in Baltimore. The house was constructed in 1950, has a floor area of 1152 sq ft divided into 2 stories with a basement having a bedroom, and has four residents. A house has a NEST thermostat in the dining area of the house along with multi-sensors \cite{Aeotec} in different rooms to measure the individual room-wise temperature and humidity. Each multi-sensor collects a single-point
+temperature value every minute. The multi-sensors transmit these values using the Z-Wave wireless protocol to a Raspberry Pi 3 base station. Having collected the data, the base station uploads it to our server for further analysis. In tandem with the multi-sensor data, we probe the NEST thermostat with an API call to capture the thermostat temperature data and another API call is made to collect outdoor weather data. We also use a thermal sensor unit which can rotate 360 degrees and capture aligned thermal and Pi RGB images, and is described in full detail in Section~\ref{sec:IRLeak}
+.   
+\subsection{Thermostat Model:}
+
+\indent We assume the thermostat to have a bang-bang control with a hysteresis setting as described in~\cite{Thermostat}. This means if a thermostat has a setpoint of $T_0$ and the heating or cooling system is functional, then the indoor temperature is expected to be with a certain range $\delta$, where the indoor temperature T is $T_l$ < $T$ < $T_h$, $T_l$ = $T_0$ - $\delta$  and $T_h$ = $T_0$ + $\delta$. 
+
+\subsection{House Model:} 
+
+ A number of factors influence the heat dynamics of a house. Primarily, the indoor and outdoor temperature of the house is a major controlling reason for AC or heater consumption. Thermal mass is the ability of a building to store and release heat and is important for better comfort and improved HVAC efficiency. The building materials determine the thermal mass of a building and the selection of ideal thermal mass for a building depends on the local climate. Thermal mass stores heat the solar energy in the day and radiates at night. Modeling the building heat dynamics of a house has been stated in great details in~\cite{building}. The most basic state space equation for building heat dynamics is given as - 
+
+ \begin{eqnarray}\label{eqn:HeatDiff}
+ \frac{dT_i}{dt} = \frac{1}{C  R} (T_a-T_i) + \frac{1}{C}Q_{h} + \frac{A_w}{C}Q_s + \frac{1}{C}Q_{other} + \epsilon \nonumber \\
+ \end{eqnarray}  
+
+  In Equation~\ref{eqn:HeatDiff}, shows the dynamics of the change in indoor temperature. The difference in temperature between indoor($T_i$) and outdoor temperature ($T_a$) and, the total heat inflow, adds up to the change in indoor temperature with time. The $Q_h$ is the heat introduced in the house by the heater, $Q_s$ is the solar radiation and $Q_{other}$ is the heat dissipated from appliances, human bodies etc. The heaters or air-conditioners and the temperature gradient act as the most important regulating factor for the heat dynamics, and the effect of others is negligible and ignored. 
+ 
+ \subsection{Non Intrusive Load Monitoring} 
+ 
+ Non-Intrusive Load Monitoring (NILM)~\cite{NILM} is the task of identifying the individual appliances energy consumption. While utility providers may have access to buildings' energy consumption, access to individual appliances' load measurement will require further instrumentation. As HVAC consumption consist of the dominant load in the aggregated signal, identifying just the AC usage using NILM is simpler~\cite{NILMAC}. NILM is pre-cursor approach for the Virtual Audit System.  
+
+
+
+ \subsection{Low-Cost Continuous Thermal Sensing}
+ 
+ Our low cost thermal imaging system has resemblances with the system proposed in~\cite{IRdevice}. The authors develop a low-cost thermal scanning sensor that can continuously measure heat radiation from surfaces in a building over extended periods of time. The sensor is battery operated and communicates wirelessly and can be placed in each room. A CAD model of the building was developed with multiple scanners, that can stitch together a thermal mapping of each surface providing. The structure scanner captures thermal data by iteratively moving a pan and tilt servo to scan across a 2-dimensional hemisphere that is used for stitching and constructing the thermal layout of the objects.

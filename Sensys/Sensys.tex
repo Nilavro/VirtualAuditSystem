@@ -1,0 +1,435 @@
+\documentclass{sig-alternate}
+
+
+
+
+% Use this command to override the default ACM copyright statement (e.g. for preprints).
+% Consult the conference website for the camera-ready copyright statement.
+
+
+%% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+ %\toappear{Permission to make digital or hard copies of all or part of this work for personal or classroom use is 	granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. \\
+% {\emph{BuildSys'16}}, Nov 16--17, 2014, Stanford,California USA. \\
+% Copyright \copyright~2016 ACM ISBN/14/04...\$15.00. \\
+% DOI string from ACM form confirmation}
+%% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+
+
+% Arabic page numbers for submission.
+% Remove this line to eliminate page numbers for the camera ready copy
+\pagenumbering{arabic}
+
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead
+\usepackage{times}    % comment if you want LaTeX's default font
+\usepackage{url}      % llt: nicely formatted URLs
+\usepackage{epic,epsfig}
+\usepackage{wrapfig}
+ \usepackage{graphicx}
+\usepackage[caption = false]{subfig}
+\usepackage{float}
+\usepackage{verbatim}
+
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\IRLeak}{{\bf IRLeak}}
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages,
+% to give it a fighting chance of not being over-written,
+% since its job is to redefine many LaTeX commands.
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={SIGCHI Conference Proceedings Format},
+pdfauthor={LaTeX},
+pdfkeywords={SIGCHI, proceedings, archival format},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+
+%\title{Activity-Aware Identification of Fine-grained Appliance Usage for Green Buildings}
+\title{Virtual Auditing and Diagnostic of Energy Waste in Building
+Environments}
+
+\numberofauthors{5}
+\author{
+	\alignauthor Nilavra Pathak\\
+	\affaddr{Information Systems}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nilavra1@umbc.edu}\\
+	\alignauthor David lachut\\
+	\affaddr{Computer Science}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{dlachut1@umbc.edu}\\
+ \and
+	\alignauthor Nirmalya Roy\\
+	\affaddr{Information Systems}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nroy@umbc.edu}\\ 
+	\alignauthor Nilanjan Banerjee\\
+	\affaddr{Computer Science}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nilanb@umbc.edu}\\
+	\alignauthor Ryan Robucci\\
+	\affaddr{Computer Engineering}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{robucci@umbc.edu}\\
+}
+
+\maketitle
+
+\begin{abstract}
+The Heating, Ventilation, and Cooling (HVAC) constitutes majority of the utility bill and energy waste in built environments. In this paper, we envision a city wide virtual energy auditing system for residential homes which would help identify the wasteful homes and provide a detailed diagnostic to assess the reason behind the waste, particularly the heating or cooling loss. In general, the HVAC usage depends on several factors such as the outdoor weather conditions, thermostat settings, nature of the insulation, and building construction materials to preserve its thermal mass and cpacity. We investigate the cross-correlations between these different factors in a built environment, their influence on the HVAC cycles, and develop a building parametric model to enumerate the heating or cooling loss and identify the causes behind those losses in built environments. We also compare our data-driven technique with a low-cost in-house built IR thermal camera based system to detect more finer building leakages and insulation problems. We posit the cost-benefit analysis of our proposed device free and device augmented approaches and discuss their feasibility for auditing energy waste in future at large scale in smart city environment.
+\end{abstract}
+
+
+%\keywords{ACM proceedings, \LaTeX, text tagging}
+
+\maketitle
+
+%\input{samplebody-conf}
+\section{Introduction}
+Nowadays the utility providers in most of the cities send feedback along with the monthly utility bills to the customers to help understand their daily usage and motivate them to change their behavior at their will. While the approach is effective for a few energy conscious customers, in general it does not work for a larger population. The reason behind the failure of raising the energy awareness successfully across a broad range of customers is that the feedback through the monthly utility bill does not provide the detailed description of any energy holes, or persistent insulation problems etc., in a home environment. While the appliance level energy disaggregation helps enumerate the users' more or less consumption patterns on a daily basis, the energy losses if dissipate from the other sources such as bad insulation, air leakages and drafty windows remain unnoticeable and extend a bigger impression on the overall consumption and utility bill. Estimating the building parameters such as thermal mass and conductance help gauge the actual causes of energy losses whereas the outdoor weather plays a crucial role on energy consumption patterns of the users, and particularly the on-off behavior of the HVAC. The existing approach does not traditionally consider the building parameters, thermostat setting, HVAC cycles etc., for virtual energy auditing and diagnostic in case of energy waste in built environment. We hypothesize that reasons of energy losses which are not so apparent and quantifiable using the existing building energy systems may evolve across the following dimensions.
+\begin{itemize}
+  \item \emph{Building Parameter Identification.} Building parameters like thermal mass and conductance (insulation) help compare different building in terms of their construction specific materials and identify the detailed analytics behind any shorter energy perseverance and loss. Thermal mass of a building acts like a capacitor which helps store the heat (or cool) and navigate the ability to preserve heat (or cool) during the days and night time. %For hotter climate, its the ability to release heat which matters. Insulation  refers to the ability of a material to slow down the transfer of heat energy.
+  \item \emph{Thermostat Settings Metric.} Different users may have different preferences to set the thermostat temperature based on the indoor home temperature, users comfort level, and outdoor weather conditions. In general the utility providers do not bookkeep the thermostat set point and indoor house temperature. We propose to investigate the impact of differences in set point and indoor temperature on the required cycle of the HVAC cycles to reach the specific set point as set by the residents. Considering a neighbourhood with similar sizes and properties of homes and building construction materials, we investigate how the consumption based on HVAC operating principles changes across multiple homes in a day over a specific season. We postulate that the abnormal consumption are ont only associated with just user comfort level, habits and personal preferencs, but also with the other causes such as bad insulation, drafty windows, thermal properties of the building structure etc.
+  \item \emph{Thermal Imaging-based Analytics.}
+\end{itemize}
+
+In summary, we take a bold step and posit that if no physical instrumentations are available is it possible to detect the poor insulation problems at scale in built environments? We advocate a device free modeling approach considering the thermostat setting and outdoor temperature to enumerate the number and duration of HVAC cycles, and characterize the severity of insulation problems of a cluster of similar homes in a specific neighborhood. While employing thermal camera or any other professional instrumentation designed specifically for detecting bad insulation albeit helps to gain a deeper understanding of the specific energy holes but incurs significant cost and deployment challenges in case of large scale deployment and long term usage. To enable virtual energy waste auditing and diagnostic at scale without percolating the onerous steps of deploying and scanning each room with an IR camera, we propose a non-intrusive parametric building energy dissipation model. Our model considers the nature of HVAC cycles, indoor temperature, thermostat setting to assess energy holes problems. We evaluate our proposed approach using real data traces from XX homes and shows that our instrumentation free building parametric approach is quite capable of detecting, differentiating and assessing the bad or good insulation and energy holes at least in moderate scale.
+\noindent {\bf Key Contributions:} We thus make the following key contributions.
+\begin{itemize}
+\item We propose a Thermal Mass Metric which quantifies the idea about heat storing capacity and rate of heat loss of a house.
+\item We compare with the Regression vs Kalman Filter approach
+\end{itemize}
+%\begin{itemize}
+%\item  \textbf{Building Parameter Identification:}
+%\begin{itemize}
+%\item Building parameters like thermal mass and conductance (insulation) can help compare the building in terms of materials and identify ones for detailed analytics.
+%
+%\item Thermal mass and insulation are uncorrelated. Thermal mass is like a capacitor which stores in the heat and the ability to release heat in winter time. For hotter climate, its the ability to release heat which matters. Insulation  refers to the ability of a material to slow down the transfer of heat energy.
+%
+%\item Compare with the Regression vs Kalman Filter approach
+%
+%\item \textbf{Propose a Thermal Mass Metric which quantifies the idea about heat storing capacity and rate of heat loss of a house.}
+%\end{itemize}
+%
+%\item \textbf{Thermostat Habits and Settings Detection:}
+%
+%\begin{itemize}
+%\item \textbf{Thermostat Habits metrics:} The habit of thermostat usage settings is given by this metric.
+%
+%\item Previous work quantifies the habit of usage or the change of temperature as the statistical correlation coefficient between the binned outdoor temperature and the air-conditioner duty-cycle. A small correlation is an indicator of habitual changes in thermostat settings (generally considered to be more energy efficient behavior).
+%
+%identifies the  habits metric depending on
+%weekend and weekday at different times of day in a day to day basis. We provide a generalized habits metric which identifies the different settings and the time of change.
+%
+%\item \textbf{Thermostat Settings Metric:} The thermostat settings metric provides the range of values for the setpoints which.
+%
+%\item Reference work applies a Robust regresssion to identify the setpoint metric but the write up is too anecdotal and difficult to interpret. The objective here is to infer a thermostat temperature setting from outdoor temperature and heater/cooler usage.
+%
+%\item \textbf{Our experimentation show that detecting the habits and settings is more complicated. Simple correlation between the duty cycle and outdoor temperature do not always reflect the high habits and also there is no means of detecting the change. The two directly observable and correlated data are outdoor temperature and consumption usage, while the indirect data whose change point aptly reflects a change in thermostat setting is indoor temperature. In such case, a change point detection needs to be adapted for auto-regressive periodic data.}
+%
+%\end{itemize}
+%
+%\item \textbf{Building Parameter Identification using Thermostat metrics:}
+%
+%\begin{itemize}
+%\item  The difference with the Building Parameter identification in the first case and this one is no indoor temperature is provided rather the thermostat habits, HVAC usage and outside temperature is used to determine the parameters.
+%\end{itemize}
+%
+%\item \textbf{IR Based Analytics:} Once the we identify homes with insulation problem, we use IR based analytics to determine the leakages in doors and windows. \textbf{The main objective is to quantify heat loss with insulation in details. We also setup individual roomwise sensors for the intention of constructing detailed heat dynamics of homes and compare with the IR sensors.}
+%\end{itemize}
+
+
+
+\section{Background}
+
+\subsection{Datasets}
+\indent We conducted using three different datasets for our experimentation. Our experiments are primarily based on datasets from homes in Austin and a smaller dataset from a house in Baltimore. Both places have hot humid climates where in Austin has very long, hot summers; warm transitional seasons; and short, mild winters where snowfall is exceptionally rare. Baltimore on the other hand lies in humid subtropical climate zone, with four distinct seasons. Winters are chilly but variable and is affected by Polar air masses and summers have hot days. We also use a smaller dataset provided in the earlier work, from a house in Denmark.
+
+\indent \textbf{Pecan Street Dataset:~\cite{Pecan}} The Pecan street dataset consists of a large number of home's itemized energy, gas, water consumption data along with a variety of other data like indoor temperature, off-grid power data, metadata of the homes in three different cities. We chose the dataset for gas and power consumption from single-family homes in Austin which have indoor temperature data and metadata and a sizable dataset for a common duration. Consumption and indoor data has a minute-wise granularity. The weather data is available at an hourly rate which is interpolated to a half hourly and 15 minute rate, under the assumption outdoor temperature changes slowly over time. Our preliminary study is limited to 14 homes which meet the requirement. The size of the individual homes' datasets vary from several months to two years depending on the available data. 
+
+\indent \textbf{CTSM Dataset:~\cite{CTSM}} The Continuous Time Stochastic Modeling toolbox provides a dataset for heat dynamics modeling for a house in Denmark in winter months. The data consist of heater consumption, indoor and outdoor temperature, and solar radiation data collected at a 15 min interval.
+
+\indent \textbf{Collected Data:} We have setup testbed in a single-family home in Baltimore. The house was constructed in 1950, has a floor area of 1152 sq ft divided into 2 stories with a basement having a bedroom, and has four residents. A house has a NEST thermostat in the dining area of the house along with multi-sensors \cite{Aeotec} in different rooms to measure the individual room-wise temperature and humidity. Each multi-sensor collects a single-point
+temperature value every minute. The multi-sensors transmit these values using the Z-Wave wireless protocol to a Raspberry Pi 3 base station. Having collected the data, the base station uploads it to our server for further analysis. In tandem with the multi-sensor data, we probe the NEST thermostat with an API call to capture the thermostat temperature data and another API call is made to collect outdoor weather data. We also use a thermal sensor unit which can rotate 360 degrees and capture aligned thermal and Pi RGB images, and is described in full detail in Section~\ref{con:irbb:id}.   
+\subsection{Thermostat Model:}
+
+\indent The thermostats in general have  a bang-bang control with a hysterisis setting. This means if a thermostat has a setpoint of $T_0$ and the heating or cooling system is functional, then the indoor temperature is expected to be with a certain range $\delta$, where the indoor temperature T is $T_l$ < $T$ < $T_h$, $T_l$ = $T_0$ - $\delta$  and $T_h$ = $T_0$ + $\delta$. 
+
+\subsection{House Model:} 
+
+ A number of factors influence the heat dynamics of a house. Primarily, the indoor and outdoor temperature of the house is a major controlling reason for AC or heater consumption. Thermal mass is the ability of a building to store and release heat and is important for better comfort and improved HVAC efficiency. The building materials determine the thermal mass of a building and the selection of ideal thermal mass for a building depends on the local climate. Thermal mass stores heat the solar energy in the day and radiates at night. The heat dynamic model for a house is given as - 
+
+ \begin{eqnarray}\label{eqn:HeatDiff}
+ \frac{dT_i}{dt} = \frac{1}{C  R} (T_a-T_i) + \frac{1}{C}Q_{h} + \frac{A_w}{C}Q_s + \frac{1}{C}Q_{other} + \epsilon \nonumber \\
+ \end{eqnarray}  
+
+  In Equation~\ref{eqn:HeatDiff}, shows the dynamics of the change in indoor temperature. The difference in temperature between indoor($T_i$) and outdoor temperature ($T_a$) and, the total heat inflow, adds up to the change in indoor temperature with time. The $Q_h$ is the heat introduced in the house by the heater, $Q_s$ is the solar radiation and $Q_{other}$ is the heat dissipated from appliances, human bodies etc. The heaters or air-conditioners and the temperature gradient act as the most important regulating factor for the heat dynamics, and the effect of others is negligible and ignored. 
+ 
+ \subsection{Non Intrusive Load Monitoring} 
+ 
+ Non-Intrusive Load Monitoring (NILM)~\cite{NILM} is the task of identifying the individual appliances energy consumption. While utility providers may have access to buildings' energy consumption, access to individual appliances' load measurement will require further instrumentation. As HVAC consumption consist of the dominant load in the aggregated signal, identifying just the AC usage using NILM is simpler~\cite{NILMAC}. NILM is pre-cursor approach for the Virtual Audit System.  
+
+\section{Virtual Audit System:}
+
+\indent We present a Virtual Audit System for residential buildings to identify the causes for HVAC energy waste and provide proper feedback to customers. Two important factors for energy waste are poor building construction and bad thermostat settings. If a house has poor thermostat settings, then the utility providers can provide feedback to adjust setpoints. On the other hand, for the homes which are have poor construction, we can provide a detailed diagnostic for a home to isolate the constructional reasons behind abnormal usage.
+
+\subsection{Building Parameter Identification:} 
+
+
+ \indent Building construction materials can be the potential determining factors for energy usage. Identifying building characteristics like insulation or resistance of walls and thermal mass or capacitance are the factors which has effect on the rate of heater/AC cycles being used. We investigated the techniques mentioned in~\cite{modeling} to find the greybox models for a building. A building heat consumption can be represented by an equivalent electrical circuit for which the equivalent state space equations are derived. With the fewer number of input parameters shown in the work its difficult to get a fully detailed model. We compare the state space model based parameter estimation with Kalman Filter against a proposed discriminative regression learning based approach.\\
+ \indent The equation relating thermal energy to thermal mass is given as $Q = C \Delta T$, where where $Q$ is the thermal energy transferred, $C$ is the thermal mass of the building, and $\Delta T$ is the change in temperature. Finding the thermal mass will help compare buildings. Apart from the thermal mass the resistance or conductance of a building is a measure for insulation. We begin our investigation with a simple model for a house where we consider only two components of the circuit conductance(R) and thermal mass(C). The exact solar radiation can't be quantified without exact sensor data so we begin our study to find alternative approaches to modeling the building heat dynamics. The heat dynamics of the is given by the state space equations as follows - 
+ 
+ \begin{eqnarray}
+ \frac{dT_i}{dt} = \frac{1}{C  R} (T_a-T_i) + \frac{1}{C}\Phi_h + \frac{A_w}{C} \Phi_s + \sigma_i \frac{d\omega_i}{dt}\\
+ Y_{i,t} = T_{i,t} + \epsilon_t
+\end{eqnarray}  
+
+ \indent The equations (2) and (3) are the state-vector equations and the measurement equations respectively. The thermal resistance is given by R and the thermal mass by C. More detailed thermal mass and resistance for building materials can be obtained where the individual thermal mass can be taken under consideration like that for building envelope, the walls and furniture etc. We found that the simplest model can be exactly achieved with slightly better residual loss using a regression model - (Generalized Linear Model(GLM)). One of the advantages of GLM is the training process is simpler and it is easier to model and represent abstract information for example cloud cover and time of day features and help construct a discriminative model. \\
+ \indent The state space equation can be discretized as \begin{eqnarray}
+ \frac{dT_i}{dt} = \frac{1}{CR} (T_a-T_i) + \frac{1}{C}\Phi_h + \frac{A_w}{C} \Phi_s + \sigma_i \frac{d\omega_i}{dt} \\
+  T_i(t+1)  = (1 - \frac{1}{CR}) T_i(t)+\nonumber \\  (\frac{1}{C}\Phi_h(t) + \frac{A_w}{C} \Phi_s(t) + \frac{1}{CR}T_a(t))
+\end{eqnarray}  
+  
+ \indent The discretization of the state space equation gives us an approximate equation which is given in Eqn(3). This can be seen as a regression equation and instead of using the a complex Extended Kalman Filter based approach we can solve it using regression techniques. We compared the errors in residuals among Extended Kalman Filter(EKF), Generalized Linear Model(GLM) and Generalized Additive Model(GAM). We found that the GAM gives comparatively less error in estimation than either of them as shown in Table~\ref{Table:Par1}.
+ 
+ \begin{table}
+ \begin{tabular}{||c| c | c | c | c | c ||} 
+ \hline 
+ HomeID &  GAM & GLM & EKF & C & R  \\ [0.5ex] 
+  \hline \hline
+94 & 0.008  & 0.026  & \textbf{0.006 } &  14.556 &
+ 0.386 \\ \hline 
+410 &  0.009 & 0.009  & \textbf{0.008} &  33.858 &
+ 0.595 \\ \hline
+484 & 0.007 & \textbf{0.007} & 0.007 &  108.078 &
+ 0.472\\ \hline
+871 & 0.010  & \textbf{0.010 } &  0.011 & 20.633 &
+0.874\\ \hline
+1314 & 0.006   & \textbf{0.006 } & 0.007 & 1092.865 &
+0.019\\ \hline
+1507 & 0.008  & \textbf{0.008 } & 0.009 & 257.370
+& 0.1507 \\ \hline
+1714 &  0.011  & \textbf{ 0.011 } & 0.013 &  72.967 & 
+ 0.191\\ \hline 
+2470 & 0.009  & 0.009  &  \textbf{0.009} & 101.546&
+1.232\\ \hline 
+2814 & 0.008 & \textbf{0.008} & 0.009&  60.881&
+ 0.183\\ \hline
+3367 & 0.007 & \textbf{0.007} & 0.007 & 944.656
+& 0.130\\ \hline
+5371 & 0.023 & 0.023 & \textbf{0.0208} &  80.065 & 
+ 0.284\\ \hline
+6673 & 0.0074 & \textbf{0.0074} &  0.0074 &90.806
+&0.348\\ \hline
+7989 & 0.003 & \textbf{0.006} & 0.010 &16.215
+&0.289\\ \hline
+8600 & 0.009 & \textbf{0.009} & 0.010 &934.0354
+&0.038\\ \hline
+ \hline
+\end{tabular}
+ \label{Table:Par1}
+
+\caption{Comparative Results of Parameter Estimation and Building Modeling on Pecan Street Data(NMSE)}
+\end{table}
+  
+ \indent We compared regression models in Table~\ref{Table:Par1} and found that GLM gives us better results for most of the cases. While GAM outperforms the rest some of the times, it is easier to obtain the co-efficients from GLM. We also list the parameters Thermal Mass(C) and Insulation(R) for each of the homes. While CTSM outperforms GLM some of the times, its mostly for smaller datasets and it even fails to converge sometimes if the data is too large.  
+
+  
+\indent \textbf{Argument against Complex models for CTSM:} The main dataset for comparison is Pecan Street's Dataset. We found that the regression models perform better for them than the CTSM model which results in high residual errors for this dataset. The other problem is CTSM seems to work better for smaller samples while more parameters can be added in case of GAM models where in case of absence of certain parameters like Solar radiation complex features like Time of Day, Cloud cover etc. can be added.  Also, the initialization for the parameters require specification of the range of values for the parameters need to be specified. CTSM suffers from convergence error on large datasets, like that from Pecan Street Dataport.
+  \begin{figure}[h]
+\includegraphics[height = 8cm,width=.48\textwidth]{RplotResiduals}
+\label{img:resid}
+\caption{Comparative plot of the residuals obtained using CTSM and GLM}
+\end{figure}
+  
+\indent \textbf{Thermal Mass Metric:} Thermal Energy of a house is theoretically quantified as the product of the Thermal Mass and the change in temperature which is the energy loss for a particular change in temperature. This is a better metric for comparison and can be better evaluated from the dataset. So the time to heat or cool a house upto a Thermostat setpoint and also the heat dynamics during non-heating hours can be used as two different metrics for comparative purposes. One of the drawbacks of these methods is the reliance on indoor temperature for model development which may not be available all the time. Rather it's easier to obtain the Thermostat Metrics which are the different durations in which thermostat settings are changed and the setpoints of those settings. In the next section, we investigate the different approaches to find the Thermostat Metrics. 
+\begin{figure*}[!t]
+    \centering
+    \subfloat[House 2470. $T_a$, $T_i$, dc]{
+        \label{fig:subfig1}
+        %\subcaption{House 2470: $T_a$,$T_i$ \& $\dc$}
+        \includegraphics[height=6cm,width=.35\textwidth]{house2470}
+    }
+    \subfloat[ACF for a single day House 2470.]{
+        \label{fig:subfig2}
+       % \subcaption{ACF for a single day House 2470}
+        \includegraphics[height=6cm,width=.35\textwidth]{CCF2470}
+    }
+     \subfloat[House 410. $T_a$,$T_i$, AC, Heater]{
+        \label{fig:subfig1}
+       % \subcaption{House 1507. $T_a$,$T_i$, $\dc$}
+        \includegraphics[height=6cm,width=.35\textwidth]{House410}
+    }
+    \caption{Sample Dataset of two homes}
+    \label{fig:subfig}
+\end{figure*}
+
+ 
+\subsection{Finding the thermostat setting of homes}
+
+\indent Utility providers may not have access to the buildings' indoor temperature. However, they do have access to the heat consumption data and weather information which can help decide in a locality which houses have more consumption. It is easier to get a survey regarding the thermostat settings for ground truth evaluation. We take the motivation for two different thermostat metrics have been suggested in~\cite{Thermostat} - Thermostat Habits Metrics and Thermostat Setpoints Metrics. The habits metrics has been described as the habitual changes in thermostat setpoints which can be obtained from outdoor temperature and thermostat cycle. 
+
+\subsubsection{\textbf{Thermostat Habit Metrics:} }
+
+\indent People use different settings for thermostats as per their comfort and energy savings requirements. The different user habits for thermostat settings has a direct relationship with HVAC usage and the . The duty cycle of a thermostat is the fraction of time in a given ON/OFF cycle that the air conditioner/heater is turned on. The previous work in~\cite{Thermostat}, normalized usage data at a half-hour resolution giving the idea about the fraction of the half hour it was ON. The external temperature data has a hourly resolution which was interpolated to get a half-hour resolution. The Statistical Habits Metrics used were correlation (Pearson product-moment coefficient) between the binned temperature data and the binned usage data is one such metric. As there is expected to be some time-delay between outdoor temperature and thermostat response due to thermal mass of the house the correlation was computed in time-shift. The survey responses were quantified as: $\sigma (T0)$ standard deviation of the four survey-reported values of summer weekday T0; spread(T0) is the difference between the maximum and minimum values of these four values; $\Delta T0$ is the difference between the workday value and the sleeping hours value. It was found most of the houses that have a high habits metric indeed have a low $\Delta T0$ and can be used for classifying houses and find which houses are likely to change thermostat settings more often and have large difference in settings values. 
+
+
+   
+
+\indent The lagged correlation between the outdoor Temperature and binned duty cycle is a good indicator of the thermostat habits. The lagged correlation helps develop ideas about thermal mass. We tested the efficacy of this approach, but computing correlation between the outdoor temperature and duty cycle at a daily basis. We found that the R value changes from day to day depending on usage and the lag value is also variable. Also as per the definition of Thermostat Habits, its the sudden change of thermostat changing and its habitual change which the previous work does not attempt to address. In Figure~\ref{fig:subfig}, a sample dataset from two homes and the correlation between outdoor temperature and duty cycle of AC, from a single day's usage has been shown. 
+
+\subsubsection{\textbf{Thermostat Setpoint Metrics:}} 
+
+\indent The thermostat setpoint is an indicator of the amount of energy being used and also the indoor temperature. In the previous work the setpoint is computed using Robust Regression . The heat introduced by air-conditioner(negative heat) or heater is correlated with the indoor and outdoor temperature, which can be related with the duty cycle. The intercept for the regression is the setpoint metric for the thermostat. Conceptually, the thermostat settings metric is the representation of the thermostat setpoint. If the thermostat setpoint is set to either of heating or cooling mode, the thermostat setpoint is expected to be the indicator of the indoor temperature and a base line for the indoor temperature measurement. The thermostat setpoint is changed depending on the time of the day and can be changed by users to a certain degree as per comfort. 
+
+\indent The relationship between duty-cycle $dc$ and the setpoint $T_0$ is given as, 
+\begin{equation}
+T_a \sim ( \frac{Q_c}{K} )dc + (T_0 - \frac{Q_{other}}{K})
+\end{equation}
+
+The suggested method for finding the setpoint metric is by constructing a robust linear model with a bisquared function. The coefficient is given by regression is the Setpoint metric which is the part  $(T_0 - \frac{Q_{other}}{K})$. For the regression to work, data needs to be split properly depending on the Thermostat settings and also it requires a certain amount of usage or else the regression won't work. This requires laborious pre-processing and selecting proper duration in which the method is applicable. Such a method is a serious drawback for generalizability and large scale analytics.
+
+\subsubsection{\textbf{A combined approach for Thermal Mass \& Thermostat Metrics:}}
+
+\indent We found that finding either of the metrics independent of one another becomes complex. Firstly, the task of finding the Thermostat Habits can be generalizable as consumers are more likely to keep similar settings over a period of time when the weather has similarities. We found in certain cases usage varies over the day and also even in the same time of day, which is attributed by thermal mass. When a house is heated or cooled, the thermal mass stores the heat which causes the lag in usage. The ideal thermal mass for winter time will capture heat during day and store it at night and in summer will shade the house from summer sun. The first problem that we want to address is detecting change in thermostat set points, given the outdoor temperature and usage pattern. We use the indoor temperature as for groundtruth valuation. The time series data itself has some auto-regressive effect which we want to utilize and added to that we want to combine periodicity for generalization.  For computing the Thermostat settings values, some ground truth is needed and the problem can be better obtained addressed using the indoor temperature data.
+
+
+\subsection{Modeling Consumption patterns from thermostat settings}
+
+\indent The indoor temperature is expected to be within the hysterisis range of the setpoint and the thermostat settings can be expected to be the indicator of indoor temperature. Hence given the thermostat metrics, which are the setpoints and duration of change is provided. The dataset will require heater or AC usage and the starting point will be after one complete cycle of usage, where the indoor temperature can be assumed to be $T_0-\delta$, where $T_0$ is the thermostat setting and $\delta$ is the hystersis band. The duration of each continuous cycle can be chosen as a parameter as that is the time it takes from $T_0 + \delta$ to go down to $T_0 - \delta$, when AC is on and vice versa for heating. The whole problem can be framed as a function of time rather than indoor temperature. 
+
+
+\subsection{IR Based Building characteristics}
+
+
+\indent After the identifying the potentially wasteful homes, we address the problem of detecting leakages and develop more detailed heat dynamics models of the homes. We compare two different datasets - one is the individual room-wise temperature data and the other is an image sensing unit using IR camera. 
+
+\subsubsection{\textbf{Individual Roomwise Data for Modeling Heat Dynamics:}}
+
+\indent We have setup temperature and humidity sensors in different parts of the house and have a NEST thermostat installed. The temperatures from different parts of the house is shown in Figure~\ref{fig:Sens}. It can be seen that different parts if the house has different dynamics of temperature. This is dependent on a number of factors like exposure to sun, local heaters being used. The objective here is to get a detailed model of the house in terms of individual room-wise parameter identification considering local factors. This in turn can help us isolate the leakages or poor thermal capacity or even the  
+
+ 
+ 
+\subsubsection{\textbf{Imaging Device}}
+ 
+
+The physical component of the thermal imaging system is a custom-created imaging device as pictured in Figure~\ref{tis:imp:ex}. Our prototypes are built from a Raspberry Pi Zero, a Raspberry Pi Camera Module, and a low-resolution IR camera, powered by a $5V$ battery, rotating on a DC motor, in a 3D printed housing. This sensor's purpose is to collect data from which to create a longitudinal thermal
+map of a room and from which to detect the variations representing leakages and other energy waste.
+
+There are two cameras in the imaging device. The IR camera is Melexis MLX90621~\cite{MLX}, which is a low resolution ($16\times$) and low power consumption of $<9mA$ when active and $<7\mu A$ otherwise. It can detect ambient temperature between  -40$^{\circ}$C  and 85 $^{\circ}$C  and object temperatures between  -50$^{\circ}$C  and  300$^{\circ}$C  with a resolution of  0.02$^{\circ}$C. The Raspberry Pi Camera Module~\cite{picam} is a RGB camera and collects images at $720\times480$ resolution. The 3D printed housing holds the cameras in a consistent relative position and orientation. The Raspberry Pi Zero controls the device and rotates the sensor unit (at 15min-1hour interval as per setting) for a number of steps sufficient to rotate at
+least  360$^{\circ}$C. For every step, the Pi collects a simultaneous image from each camera. After the batch of rotations completes, the imaging device uploads the collected images to a server for processing.
+
+
+
+%\textsc{\begin{figure}[t!]
+%\begin{center}
+%	\includegraphics[width=3.5in]{figs/SystemArch.pdf}
+%\end{center}
+%  \caption{Thermal Imaging System Block Diagram}
+%  \label{fig:Overview}
+%\end{figure}}
+
+	
+\begin{figure}[h]
+ \centering
+    \subfloat[Imaging Device]{
+      \label{tis:imp:ex}
+        %\subcaption{House 2470: $T_a$,$T_i$ \& $\dc$}
+        \includegraphics[height=.2\textheight,width=.15\textwidth,keepaspectratio]{CameraModule.jpg}
+    }
+       \centering
+    \subfloat[Room-wise Temperature Sensor Data]{
+      \label{fig:Sens}
+        %\subcaption{House 2470: $T_a$,$T_i$ \& $\dc$}
+        \includegraphics[height=6cm,width=.35\textwidth,keepaspectratio]{Temp.jpeg}
+    }
+    \caption{Imaging Device and Room-wise Temperature Data}
+\end{figure}
+
+\subsubsection{\textbf{Image Processing}}
+ \indent On the image processing server, we use the RGB and IR image sets to generate a unified thermal map of the room. The first image processing step uses OpenCV to generate a panorama from the RGB images and record the homography matrices used for those image transformations. This process allows us to avoid the need for a heavier, more expensive stepper motor, because those homography matrices encode the relationships between sequential images. The second step uses those  matrices to produce an IR panorama of the room. The 3D printed housing of the imaging device maintains a fixed relationship between the positions and perspectives of the two cameras in each prototype. We calculate the mapping between the cameras once and, at processing time, use this transformation in addition to the homographies calculated in the RGB stitching process. Thus, we map each IR image on to its corresponding RGB image, then stitch those transformed IR images to create an IR panorama of the room.
+
+\indent We propose to use the IR camera in tandem with a digital camera to detect and appropriately map the heatmap's points of interest in contrast to the presence of buildings air leakages, heat dissipation associated with different objects and appliances while achieving high precision and detection accuracy. While the specific color codes of heatmaps help detect the moderate, extreme or regular hot and cold surfaces, augmenting this with digital images helps detect any unusual usage behaviors, and operating conditions of everyday appliances in a smart home environment. For example, if a room has multiple windows and doors with air leakages or multiple similar small to medium load appliances, solely the heatmaps may not provide the home owners the adequate information as needed to detect any abnormal energy usage. While the IR camera albeit helps detect the region of interest but fails to provide the detailed identifications of the similar type of objects and appliances.
+
+ 
+We employ the digital stitching procedure~\cite{Stitch} to create the thermal panorama. We first stitch the digital images and maintain the respective control points for the stitching procedure which we reemploy to process the stitched thermal image generation. Next we augment the digital image in the background of the stitched thermal image based on the respective control points.% as shown in Figure~\ref{fig:Stitch} (b).
+ We use a hybrid image construction methodology where the mask image or the thermal image is passed through a low pass filter and the digital image is passed through a high frequency filter to construct the digital image augmented heatmaps. A complete procedure of the this image processing step is described in Figure~\ref{algo:IPU}. We then apply a image segmentation algorithm to determine the different heatzone clusters in the stitched image. The temperature of each cluster is them compared with entries in a lookup table to determine the state of a specific appliance. For instance, we pre-measure the surface temperature of the refrigerator with the door open at 40$^{\circ}$F  and store it in the lookup table. If the measured temperature of the cluster is closest to 40$^{\circ}$ F then the system determines that the refrigerator door is open.
+ 
+\subsubsection{\textbf{Initial Analytics}}
+
+There are three possible types of thermal regions in an image - background, cold region and hot region. The image that needs to be segmented is the stitched IR image and the objective is to create a thermal mask which separates the hot and cold regions from the background. Since the thermal image is being used for segmentation, the results are subject to the choice of color palette and range selection.  We ensure that the background has darker tones than the hot or cold surfaces which helps achieve the desired segmentation after image binarization using Otsu's method~\cite{OTSU}. We apply a 7$\times$7 neighborhood 2-D median filter to eliminate small blobs and isolate the few major thermal zones. Initial experiment suggested that the it is easy to detect human presence and objects as long as the wall temperature do not mask them. 
+ 
+\section{Long Term Plans}
+
+\indent The major hindrance to our plan is data collection as we need data over a period of time to perform the experimentation. The weather in Baltimore is such that only few days require AC usage in summer but the heater use in winter is more common. Apart from that the project requires multiple analytics models to be developed.
+ 
+\section{Conclusion}
+ 
+
+\begin{thebibliography}{Xyz12}
+
+\bibitem{building} Bacher, Peder, and Henrik Madsen.  Identifying suitable models for the heat dynamics of buildings.  Energy and Buildings 43.7 (2011): 1511-1522. 
+
+\bibitem{modeling} Andersen, Klaus Kaae, Henrik Madsen, and Lars H. Hansen. "Modelling the heat dynamics of a building using stochastic differential equations." Energy and Buildings 31.1 (2000): 13-24.
+
+\bibitem{MLX} https://www.melexis.com/en/product/MLX90621/Far-Infrared-Sensor-Array-High-Speed-Low-Noise
+
+ \bibitem{picam} https://www.raspberrypi.org/products/camera-module-v2/
+ 
+\bibitem{Thermostat} Sylvia J. Smullin, Thermostat metrics derived from HVAC cycling data for targeted utility efficiency programs , Energy and Buildings, Volume 117, 1 April 2016, Pages 176-184.
+
+\bibitem{GAM} Wood, Simon. Generalized additive models: an introduction with R. CRC press, 2006.
+
+
+\bibitem{Aeotec} https://aeotec.freshdesk.com/support/solutions/articles/ 6000167331-multisensor-gen5-technical-specification-
+
+\bibitem{CTSM} http://ctsm.info/pdfs/examples/building2.pdf
+
+\bibitem{Pecan} http://www.pecanstreet.org/
+
+\bibitem{NILM} G. W. Hart, Nonintrusive appliance load monitoring, in Proceedings of the IEEE, vol. 80, no. 12, pp. 1870-1891, Dec 1992.
+
+\bibitem{NILMAC} Perez, Krystian X., et al. Nonintrusive disaggregation of residential air-conditioning loads from sub-hourly smart meter data. Energy and Buildings 81 (2014): 316-325.
+
+\bibitem{Changepoint} Lund, Robert, et al. Changepoint detection in periodic and autocorrelated time series. Journal of Climate 20.20 (2007): 5178-5190.
+
+\bibitem{stitch} http://www.pyimagesearch.com/2016/01/11/opencv-panorama-stitching/
+
+
+\bibitem{OTSU} Otsu, Nobuyuki. "A threshold selection method from gray-level histograms." Automatica 11.285-296 (1975): 23-27.
+
+\end{thebibliography}
+\end{document}

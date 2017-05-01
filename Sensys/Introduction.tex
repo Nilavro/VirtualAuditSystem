@@ -1,0 +1,148 @@
+\documentclass{sig-alternate}
+
+
+
+
+% Use this command to override the default ACM copyright statement (e.g. for preprints).
+% Consult the conference website for the camera-ready copyright statement.
+
+
+%% EXAMPLE BEGIN -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+ %\toappear{Permission to make digital or hard copies of all or part of this work for personal or classroom use is 	granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org. \\
+% {\emph{BuildSys'16}}, Nov 16--17, 2014, Stanford,California USA. \\
+% Copyright \copyright~2016 ACM ISBN/14/04...\$15.00. \\
+% DOI string from ACM form confirmation}
+%% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
+
+
+% Arabic page numbers for submission.
+% Remove this line to eliminate page numbers for the camera ready copy
+\pagenumbering{arabic}
+
+
+% Load basic packages
+\usepackage{balance}  % to better equalize the last page
+\usepackage{graphics} % for EPS, load graphicx instead
+\usepackage{times}    % comment if you want LaTeX's default font
+\usepackage{url}      % llt: nicely formatted URLs
+\usepackage{epic,epsfig}
+\usepackage{wrapfig}
+ \usepackage{graphicx}
+\usepackage[caption = false]{subfig}
+\usepackage{float}
+\usepackage{verbatim}
+
+
+% llt: Define a global style for URLs, rather that the default one
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\bf\ttfamily}}}
+\makeatother
+\urlstyle{leo}
+
+\newcommand{\IRLeak}{{\bf IRLeak}}
+
+% To make various LaTeX processors do the right thing with page size.
+\def\pprw{8.5in}
+\def\pprh{11in}
+\special{papersize=\pprw,\pprh}
+\setlength{\paperwidth}{\pprw}
+\setlength{\paperheight}{\pprh}
+\setlength{\pdfpagewidth}{\pprw}
+\setlength{\pdfpageheight}{\pprh}
+
+% Make sure hyperref comes last of your loaded packages,
+% to give it a fighting chance of not being over-written,
+% since its job is to redefine many LaTeX commands.
+\usepackage[pdftex]{hyperref}
+\hypersetup{
+pdftitle={SIGCHI Conference Proceedings Format},
+pdfauthor={LaTeX},
+pdfkeywords={SIGCHI, proceedings, archival format},
+bookmarksnumbered,
+pdfstartview={FitH},
+colorlinks,
+citecolor=black,
+filecolor=black,
+linkcolor=black,
+urlcolor=black,
+breaklinks=true,
+}
+
+% create a shortcut to typeset table headings
+\newcommand\tabhead[1]{\small\textbf{#1}}
+
+
+% End of preamble. Here it comes the document.
+\begin{document}
+
+
+%\title{Activity-Aware Identification of Fine-grained Appliance Usage for Green Buildings}
+\title{Virtual Auditing and Diagnostic of Energy Waste in Building
+Environments}
+
+\numberofauthors{5}
+\author{
+	\alignauthor Nilavra Pathak\\
+	\affaddr{Information Systems}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nilavra1@umbc.edu}\\
+	\alignauthor David lachut\\
+	\affaddr{Computer Science}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{dlachut1@umbc.edu}\\
+ \and
+	\alignauthor Nirmalya Roy\\
+	\affaddr{Information Systems}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nroy@umbc.edu}\\ 
+	\alignauthor Nilanjan Banerjee\\
+	\affaddr{Computer Science}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{nilanb@umbc.edu}\\
+	\alignauthor Ryan Robucci\\
+	\affaddr{Computer Engineering}\\
+	\affaddr{University of Maryland Baltimore County}\\
+	\email{robucci@umbc.edu}\\
+}
+
+\maketitle
+
+\begin{abstract}
+The Heating, Ventilation, and Cooling (HVAC) constitutes majority of the utility bill and energy waste in built environments. In this paper, we envision a city wide virtual energy auditing system for residential homes which would help identify the wasteful homes and provide a detailed diagnostic to assess the reason behind the waste, particularly the heating or cooling loss. In general, the HVAC usage depends on several factors such as the outdoor weather conditions, thermostat settings, nature of the insulation, and building construction materials to preserve its thermal mass and capacity. We investigate the lagged correlations between these different factors in a built environment, their influence on the HVAC cycles, and develop a building parametric model to enumerate the heating or cooling loss and identify the causes behind those losses in built environments. We also compare our data-driven technique with a low-cost in-house built IR thermal camera based system to detect more finer building leakages and insulation problems. We posit the cost-benefit analysis of our proposed device free and device augmented approaches and discuss their feasibility for auditing energy waste in future at large scale in smart city environment.
+\end{abstract}
+
+
+%\keywords{ACM proceedings, \LaTeX, text tagging}
+
+\maketitle
+
+%\input{samplebody-conf}
+\section{Introduction}
+Nowadays the utility providers in most of the cities send feedback along with the monthly utility bills to the customers to help understand their daily usage and motivate them to change their behavior at their will. While the approach is effective for a few energy conscious customers, in general it does not work for a larger population. The reason behind the failure of raising the energy awareness successfully across a broad range of customers is that the feedback through the monthly utility bill does not provide the detailed description of any energy holes, or persistent insulation problems etc., in a home environment. While the appliance level energy disaggregation helps enumerate the users' more or less consumption patterns on a daily basis, the energy losses if dissipate from the other sources such as bad insulation, air leakages and drafty windows remain unnoticeable and extend a bigger impression on the overall consumption and utility bill. Estimating the building parameters such as thermal mass and conductance help gauge the actual causes of energy losses whereas the outdoor weather plays a crucial role on energy consumption patterns of the users, and particularly the on-off behavior of the HVAC. The existing approach does not traditionally consider the building parameters, thermostat setting, HVAC cycles etc., for virtual energy auditing and diagnostic in case of energy waste in built environment. We hypothesize that the reasons of energy losses which are not so apparent and quantifiable using the existing building energy systems may evolve across the following dimensions.
+\begin{itemize}
+  \item \emph{Building Parameter Identification.} Building parameters like thermal mass and conductance (insulation) constitute the characteristics of construction specific materials and help identify the causation of any shorter or longer energy perseverance and loss of any built infrastructure. Thermal mass of a building acts like a capacitor which helps store the heat (or cold) and control the building ability to preserve heat (or cold) during the day and night time. Therefore, we plan to investigate the building thermal and construction specific parameters which help design advanced analytics that can enlighten the structural and thermal deficits of any built environment. %For hotter climate, its the ability to release heat which matters. Insulation  refers to the ability of a material to slow down the transfer of heat energy.
+  \item \emph{Thermostat Settings Metric.} Different users may have different preferences to set the thermostat temperature based on the indoor home temperature, users comfort level, and outdoor weather conditions. In general the utility providers do not bookkeep the thermostat set point and indoor house temperature. We propose to investigate the impact of differences in set point and indoor temperature on the HVAC cycles needed to reach the specific set point temperature as controlled by the residents. Considering a neighborhood with similar sizes and properties of homes and building construction materials, we investigate how the consumption based on HVAC operating cycles changes across multiple homes in a day over a specific season. We postulate that the abnormal consumption are not only associated with just user comfort level, habits and personal preferences, but also with the other causations such as bad insulation, drafty windows, and inherent thermal properties of the building structure etc.
+  \item \emph{Thermal Imaging-based Analytics.} In this work we advocate employing a non-intrusive energy waste auditing method relying on the existing set up in current built environment without intruding another new system. Nevertheless due to the proliferation of low-cost tiny sensor systems we believe that portable thermal imaging system based on IR camera could be deployed in conjunction with our building parametric methodology to focus and pinpoint the energy holes at scale. 
+\end{itemize}
+
+The thermostat settings metric provides the range of values for the set points which are typically user preference driven. Past work quantifies the habit of HVAC usage or the change of temperature as the statistical correlation coefficient between the binned outdoor temperature and the air-conditioner duty-cycle~\cite{Thermostat}.  
+They applied a regression model to identify the set point metric but did not consider the indoor temperature. We posit a generalized habits metric which identifies the different settings and the time of change based on the indoor and outdoor temperature and HVAC duty cycles. Our preliminary analysis shows that detecting the habits and thermostat set point is a non-trivial research task and simple correlation based regression model based on the duty cycle and outdoor temperature may not always reflect the user habits and help infer the set point accurately. Therefore, we hypothesize to consider the indoor temperature which is highly correlated with set point setting in our proposed parametric building thermal model.
+
+ 
+In summary, we take a bold step in this paper and posit that if no physical instrumentations are available is it possible to detect the poor insulation problems at scale in built environments? We advocate a device free modeling approach considering the thermostat setting and outdoor temperature to enumerate the number and duration of HVAC cycles, and characterize the severity of insulation problems of a cluster of similar homes in a specific neighborhood. While employing thermal camera or any other professional instrumentation designed specifically for detecting bad insulation albeit helps to gain a deeper understanding of the specific energy holes but incurs significant cost and deployment challenges in case of large scale deployment and long term usage. To enable virtual energy waste auditing and diagnostic at scale without percolating the onerous steps of deploying and scanning each room with an IR camera, we propose a non-intrusive parametric building energy dissipation model. Our model considers the nature of HVAC cycles, indoor temperature, thermostat setting to assess energy holes problems. We evaluate our proposed approach using real data traces from 14 homes and shows that our instrumentation free building parametric approach is quite capable of detecting, differentiating and assessing the bad or good insulated homes and energy holes at least in moderate scale.\\
+\noindent {\bf Key Contributions:} We thus make the following key contributions.
+\begin{itemize}
+\item We posit a simple time series regression model and compare it with an existing Kalman filter based approach to derive building parameters. We propose a thermal mass metric which quantifies the idea about heat storing capacity and rate of heat loss of a house. 
+\item We propose a change point detection based auto-regressive periodic data model considering the outdoor temperature, indoor temperature, and HVAC cycles which helps to aptly capture a change in thermostat setting.
+\item We design a low-cost IR camera based system and collected data in real environment to compare and study the feasibility of our device-free and device-augmented energy waste auditing and diagnostic method.
+\end{itemize}
+
+	\input{Background}
+
+	\input{VirtualAudit}
+	\input{Thermostats}
+	\input{IRLeak}
+	\input{Conclusion}
+
+\end{document}

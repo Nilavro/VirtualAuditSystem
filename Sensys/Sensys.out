@@ -1,0 +1,21 @@
+\BOOKMARK [1][-]{section.1}{1 Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{2 Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{2.1 Datasets}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{2.2 Thermostat Model:}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{2.3 House Model:}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{2.4 Non Intrusive Load Monitoring}{section.2}% 6
+\BOOKMARK [1][-]{section.3}{3 Virtual Audit System:}{}% 7
+\BOOKMARK [2][-]{subsection.3.1}{3.1 Building Parameter Identification:}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.2}{3.2 Finding the thermostat setting of homes}{section.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.1}{3.2.1 Thermostat Habit Metrics: }{subsection.3.2}% 10
+\BOOKMARK [3][-]{subsubsection.3.2.2}{3.2.2 Thermostat Setpoint Metrics:}{subsection.3.2}% 11
+\BOOKMARK [3][-]{subsubsection.3.2.3}{3.2.3 A combined approach for Thermal Mass \046 Thermostat Metrics:}{subsection.3.2}% 12
+\BOOKMARK [2][-]{subsection.3.3}{3.3 Modeling Consumption patterns from thermostat settings}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.4}{3.4 IR Based Building characteristics}{section.3}% 14
+\BOOKMARK [3][-]{subsubsection.3.4.1}{3.4.1 Individual Roomwise Data for Modeling Heat Dynamics:}{subsection.3.4}% 15
+\BOOKMARK [3][-]{subsubsection.3.4.2}{3.4.2 Imaging Device}{subsection.3.4}% 16
+\BOOKMARK [3][-]{subsubsection.3.4.3}{3.4.3 Image Processing}{subsection.3.4}% 17
+\BOOKMARK [3][-]{subsubsection.3.4.4}{3.4.4 Initial Analytics}{subsection.3.4}% 18
+\BOOKMARK [1][-]{section.4}{4 Long Term Plans}{}% 19
+\BOOKMARK [1][-]{section.5}{5 Conclusion}{}% 20
+\BOOKMARK [1][-]{section.6}{6 References}{}% 21
